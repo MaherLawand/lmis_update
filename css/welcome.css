@@ -1,0 +1,150 @@
+body{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    max-width: 1200px;
+    margin: 0 auto;
+   
+}
+
+input{
+    padding: 3px 5px;
+}
+
+select{
+  
+    padding: 3px 5px;
+}
+
+
+
+/* .circle{
+    border: 1px solid red;
+    padding: .4rem;
+    border-radius: 50%;
+} */
+
+.steps{
+    display: flex;  
+
+}
+
+.steps div{
+    margin: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+i{
+    margin: 0 .2rem;
+}
+
+.btn{
+    padding: .5rem 1rem;
+    background-color: #00c16e;
+    border: 0;
+    color:#fff;
+    font-size: .9rem;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.btn:hover{
+    background-color: #133a29;
+}
+
+
+.buttonsGroup{
+    display: flex;
+    border: 1px solid red;
+    
+}
+
+
+
+.save{
+    align-self: flex-start;
+}
+/* .active{
+    background-color: #00c16e;
+} */
+
+
+/* section provider id */
+.providerId{
+    border: 1px solid black;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin-bottom: 2rem;
+    margin-top: 1rem;
+    
+}
+
+ 
+/* end section provider id */
+
+
+/* section provider details */
+.providerDetails{
+   border: 1px solid black;
+   height: 50vh;
+   display: flex;
+   flex-direction: column;
+}
+
+.providerDetails div{
+    margin: 1rem 0;
+}
+
+.providerDetails div input{
+    width: 100%;
+   
+    
+}
+
+.providerDetails div select{
+     width: 100%;
+}
+
+
+/* end section provider details */
+
+
+/* rating section */
+  .rating{
+    border: 1px solid black;
+    /* display: flex; */
+     margin-top: 1rem;
+    /* height: 50vh;   */
+  }
+
+  
+table{
+    width: 100%;
+    border: 1px solid black;
+}
+
+
+  /* .rating .cl-2{ 
+    border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    flex:50% ;
+    
+  } */
+
+
+/* end rating section */
+
+
+/* section location */
+    .location {
+        margin-top: 1rem;
+    }
+
+    .tblLocation{
+        padding: 1rem;
+    }
+/* end location */
