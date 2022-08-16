@@ -27,10 +27,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./css/programme.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
+    <script type="text/javascript" src="./js/step2.js" defer></script>
     <title>Document</title>
 </head>
 <body>
     <div class="container">
+    <input type="hidden" id="hidden" value="4">
 <section class="path">
 <div class="path1">
     <div class="card ">
@@ -91,7 +93,11 @@
 
 <div class="path2">
     <p >Enter the details of the training provider. Click on <strong>Save</strong> to save the changes that you have made. Click on <strong>Edit</strong> to edit an already existing record</p>
+    <div class="flex-btns-2">
 
+<a id="edit" name="edit" onclick="savebtn();" class="btn">Edit</a>
+<a id="upper-next" name="upr-next" class="btn">Next</a>
+</div>
     <section class="contact-info">
 
     <table style="width:100%;border-collapse:collapse;">

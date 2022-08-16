@@ -1,6 +1,7 @@
 let upr_next=document.getElementById("upper-next");
 let btm_next=document.getElementById("bottom-next");
 let edit=document.querySelectorAll("#edit");
+let hidden=document.getElementById("hidden");
 
 
 
@@ -87,7 +88,14 @@ for(let i=0;i<count.length;i++){
 if(counter>0 || longsec>59 || latsec>59){
     console.log("missing");
 }else{
-    console.log("worked");
+    if(hidden.value==1){
+            window.location.href = "QMS.php";
+        }else if(hidden.value==2){
+            window.location.href = "programmescope.php";
+        }
+        else if(hidden.value==3){
+            window.location.href = "ETDstaff.php";
+        }
 }
 });
 
@@ -105,7 +113,14 @@ btm_next.addEventListener('click',()=>{
     if(counter>0 || longsec>59 || latsec>59){
         console.log("missing");
     }else{
-        console.log("worked");
+        if(hidden.value==1){
+            window.location.href = "QMS.php";
+        }else if(hidden.value==2){
+            window.location.href = "programmescope.php";
+        }
+        else if(hidden.value==3){
+            window.location.href = "ETDstaff.php";
+        }
     }
     });
  
