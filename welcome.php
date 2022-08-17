@@ -72,7 +72,7 @@
     
     $query_contact=mysqli_query($conn,$sqlcontact);
     }else{
-        $sqlprovider_update="UPDATE provider_detalis SET user_code='$provider_code',entity_reg_num='$entity_reg_num',provider_name='$provider_name',trading_name='$trading_name',pparl='$pparl',dhet='$dhet_reg',dhet_reg_num='$dhet_reg_num',dhet_reg_start_date='$new_start_Date',dhet_reg_end_date='$new_end_Date',bbbee_rating='$bbbee_rating',bbbee_rec='$bbbee_rec',num_fulltime_staff='$num_fulltime_staff',num_contracted_staff='$num_cont_staff',main_prov_operation='$main_prov',lat_deg='$lat_deg',lat_min='$lat_min',lat_sec='$lat_sec',long_deg='$long_deg',long_min='$long_min',long_sec='$long_sec' WHERE user_id='$provider_id'";
+        $sqlprovider_update="UPDATE provider_detalis SET user_code='$provider_code',entity_reg_num='$entity_reg_num',provider_name='$provider_name',trading_name='$trading_name',sps='$sps',pparl='$pparl',dhet='$dhet_reg',dhet_reg_num='$dhet_reg_num',dhet_reg_start_date='$new_start_Date',dhet_reg_end_date='$new_end_Date',bbbee_rating='$bbbee_rating',bbbee_rec='$bbbee_rec',num_fulltime_staff='$num_fulltime_staff',num_contracted_staff='$num_cont_staff',main_prov_operation='$main_prov',lat_deg='$lat_deg',lat_min='$lat_min',lat_sec='$lat_sec',long_deg='$long_deg',long_min='$long_min',long_sec='$long_sec' WHERE user_id='$provider_id'";
         $query_update_provider=mysqli_query($conn,$sqlprovider_update);
 
         $sqlcontact_update="UPDATE contact_details SET first_name='$firstname',title='$title',last_name='$lastname',pos_in_org='$pos_in_or',tel_num='$tel_num',cel_num='$cel_num',email='$email',physical_address='$physical_address',postal_address='$postal_address',house_ph='$houseph',house_po='$housepo',street_ph='$streetph',street_po='$streetpo',suburb_ph='$suburbph',suburb_po='$suburbpo',towncity_ph='$TownCityph',towncity_po='$TownCitypo',postalcode_ph='$postalCodeph',postalcode_po='$postalCodepo',province_ph='$Provinceph',province_po='$Provincepo' WHERE user_id='$provider_id'";
@@ -250,7 +250,11 @@ $contact_row = mysqli_fetch_assoc($selectcontact);
                             //echo $conn;
                             while($rows = $result ->fetch_assoc())
                             {
-                                echo  "<option value = ".$rows['id'].">" . $rows['setaName'] . "</option>" ;
+                                echo  "<option value = " .$rows['id']." " ?> <?php if(mysqli_num_rows($selectprovider)>0){
+                                    if($provider_row['sps']==$rows['id']){
+                                        echo "selected";
+                                    }
+                                } ?> <?php echo " >" . $rows['setaName'] . "</option>" ;
                             }
                             
                             
@@ -260,7 +264,7 @@ $contact_row = mysqli_fetch_assoc($selectcontact);
         </tr>
 
         <tr>
-            <th>Proof of Primary Accreditation and RL</th><td><input type="file" name="proofAcc" id="proofAcc" value="<?php 
+            <th>Proof of Primary Accreditation and RL: </th><td><input type="file" name="proofAcc" id="proofAcc" value="<?php 
             if(mysqli_num_rows($selectprovider)>0){
             if($provider_row['pparl']!=""){
                 echo $provider_row['pparl']; 
@@ -348,27 +352,33 @@ $contact_row = mysqli_fetch_assoc($selectcontact);
         </tr>
         
         <tr>
-            <th>BBBEE Rating :</th><td> <select id="BBBEE-lvl" name="BBBEE-lvl" class="count" onfocusout="checkempty('BBBEE-lvl');" onkeyup="savebtn();" value="<?php 
-            if(mysqli_num_rows($selectprovider)>0){
-            if($provider_row['bbbee_rating']!=""){
-                echo $provider_row['bbbee_rating']; 
-                } 
-            }
-                ?>"
-                <?php if(mysqli_num_rows($selectprovider)>0){
+            <th>BBBEE Rating :</th><td> <select id="BBBEE-lvl" name="BBBEE-lvl" class="count" onfocusout="checkempty('BBBEE-lvl');" onkeyup="savebtn();"
+            <?php 
+                if(mysqli_num_rows($selectprovider)>0){
                 if($provider_row['bbbee_rating']!=""){
                     echo "disabled";
                 }
             }
-                ?>>
-                <option> Level One </option>
-                <option> Level Two </option>
-                <option> Level Three </option>
-                <option> Level Four </option>
-                <option> Level Five </option>
-                <option> Level Six </option>
-                <option> Level Seven </option>
-                <option> Level Eight </option>
+                ?>
+                >
+             <?php 
+                        include 'config.php';
+                        $sqlbbbee = "SELECT id ,bbbee_rating FROM bbbee";
+                        $result = $conn -> query($sqlbbbee);
+                        // $rows = $result -> mysqli_fetch_assoc();
+                            //echo $conn;
+                            while($rows = $result ->fetch_assoc())
+                            {
+                                echo  "<option value = " .$rows['id']." " ?> <?php if(mysqli_num_rows($selectprovider)>0){
+                                    if($provider_row['bbbee_rating']==$rows['id']){
+                                        echo "selected";
+                                    }
+                                } ?> <?php echo " >" . $rows['bbbee_rating'] . "</option>" ;
+                            }
+                            
+                            
+                            
+                        ?> 
         </select></td>
             <th>BBBEE Recognition:</th><td><input type="number" id="BBBEE-rec" name="BBBEE-rec" class="count" onfocusout="checkempty('BBBEE-rec');" onkeyup="savebtn();" value="<?php 
             if(mysqli_num_rows($selectprovider)>0){
@@ -825,42 +835,60 @@ $contact_row = mysqli_fetch_assoc($selectcontact);
                 ></td>
         </tr>
         <tr>
-            <th>Province : </th> <td><select  name="ProvincePH" id="ProvincePH" class="count" onfocusout="checkempty('ProvincePH');" onkeyup="savebtn();" value="<?php
-            if(mysqli_num_rows($selectcontact)>0){ 
-            if($contact_row['province_ph']!=""){
-                echo $contact_row['province_ph']; 
-                }
-            } 
-                ?>"
-                <?php if(mysqli_num_rows($selectcontact)>0){
+            <th>Province :</th><td><select name="ProvincePH" id="ProvincePH" class="count" onfocusout="checkempty('ProvincePH');" onkeyup="savebtn();"
+            <?php if(mysqli_num_rows($selectcontact)>0){
                 if($contact_row['province_ph']!=""){
                     echo "disabled";
                 }
             }
                 ?>
                 >
-                <option value="null">--select--</option>
-                <option value=""></option>
-                <option value=""></option>
-            </select></td>
-            <th>Province : </th> <td><select  name="ProvincePO" id="ProvincePO" class="count" onfocusout="checkempty('ProvincePO');" onkeyup="savebtn();" value="<?php 
-            if(mysqli_num_rows($selectcontact)>0){
-            if($contact_row['province_po']!=""){
-                echo $contact_row['province_po']; 
-                } 
-            }
-                ?>"
-                <?php if(mysqli_num_rows($selectcontact)>0){
-                if($contact_row['province_po']!=""){
+             <?php 
+                        include 'config.php';
+                        $sqlProvince = "SELECT id ,province FROM province";
+                        $result = $conn -> query($sqlProvince);
+                        // $rows = $result -> mysqli_fetch_assoc();
+                            //echo $conn;
+                            while($rows = $result ->fetch_assoc())
+                            {
+                                echo  "<option value = " .$rows['id']." " ?> <?php if(mysqli_num_rows($selectcontact)>0){
+                                    if($contact_row['province_ph']==$rows['id']){
+                                        echo "selected";
+                                    }
+                                } ?> <?php echo " >" . $rows['province'] . "</option>" ;
+                            }
+                            
+                            
+                            
+                        ?> 
+           </select></td> 
+           <th>Province :</th><td><select name="ProvincePH" id="ProvincePH" class="count" onfocusout="checkempty('ProvincePH');" onkeyup="savebtn();"
+            <?php if(mysqli_num_rows($selectcontact)>0){
+                if($contact_row['province_ph']!=""){
                     echo "disabled";
                 }
             }
                 ?>
                 >
-                <option value="null">--select--</option>
-                <option value=""></option>
-                <option value=""></option>
-            </select></td>
+             <?php 
+                        include 'config.php';
+                        $sqlProvince = "SELECT id ,province FROM province";
+                        $result = $conn -> query($sqlProvince);
+                        // $rows = $result -> mysqli_fetch_assoc();
+                            //echo $conn;
+                            while($rows = $result ->fetch_assoc())
+                            {
+                                echo  "<option value = " .$rows['id']." " ?> <?php if(mysqli_num_rows($selectcontact)>0){
+                                    if($contact_row['province_ph']==$rows['id']){
+                                        echo "selected";
+                                    }
+                                } ?> <?php echo " >" . $rows['province'] . "</option>" ;
+                            }
+                            
+                            
+                            
+                        ?> 
+           </select></td> 
         </tr> 
     </table>
 </section>
@@ -880,8 +908,8 @@ $contact_row = mysqli_fetch_assoc($selectcontact);
             <th>Last Update Date :</th> <td><input type="date" id="update-date" name="update-date"></td>
         </tr>
         <tr>
-            <th>Create User :</th><td><input type="text" id="create-user" name="create-user"></td>
-            <th>Last Update User :</th><td><input type="text" id="update-user" name="update-user"></td>
+            <th>Create User :</th><td><input type="text" id="create-user" name="create-user" value="<?php echo $row['name'] ?>" disabled></td>
+            <th>Last Update User :</th><td><input type="text" id="update-user" name="update-user" value="<?php echo $row['name'] ?>" disabled></td>
         </tr>
     </table>
 </div>
