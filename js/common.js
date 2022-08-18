@@ -1,3 +1,4 @@
+
 if(document.URL.includes("welcome.php")){
     let upr_next=document.getElementById('edit');
         let pid=document.getElementById('pid');
@@ -91,10 +92,177 @@ if(document.URL.includes("welcome.php")){
     
 }
 if(document.URL.includes("QMS.php")){
-    for (let i = 0; i < localStorage.length; i++) {
-        const key = localStorage.key(i);
-        console.log(`${key}: ${localStorage.getItem(key)}`);
-    }
-}
-    
+   let one =document.getElementById('one');
+   let two =document.getElementById('two');
+   let three =document.getElementById('three');
+   let four =document.getElementById('four');
+   let five =document.getElementById('five');
+   let six =document.getElementById('six');
+   let seven =document.getElementById('seven');
+   let eight =document.getElementById('eight');
+   let nine =document.getElementById('nine');
+   let ten =document.getElementById('ten');
+   let eleven =document.getElementById('eleven');
+   let twelve =document.getElementById('twelve');
+   let thirteen =document.getElementById('thirteen');
+   let fourteen =document.getElementById('fourteen');
+   let fifteen =document.getElementById('fifteen');
+   let checkbox=document.querySelector('input');
+    var table=[];
+   function check(x){
+    if(x.checked){
+       if(x==one){
+        table.push(1);
+        console.log(table);
+       }
+       if(x==two){
+        table.push(2);
+        console.log(table);
+       }
+       if(x==three){
+        table.push(3);
+        console.log(table);
+       }
+       if(x==four){
+        table.push(4);
+        console.log(table);
+       }
+       if(x==five){
+        table.push(5);
+        console.log(table);
+       }
+       if(x==six){
+        table.push(6);
+        console.log(table);
+       }
+       if(x==seven){
+        table.push(7);
+        console.log(table);
+       }
+       if(x==eight){
+        table.push(8);
+        console.log(table);
+       }
+       if(x==nine){
+        table.push(9);
+        console.log(table);
+       }
+       if(x==ten){
+        table.push(10);
+        console.log(table);
+       }
+       if(x==eleven){
+        table.push(11);
+        console.log(table);
+       }
+       if(x==twelve){
+        table.push(12);
+        console.log(table);
+       }
+       if(x==thirteen){
+        table.push(13);
+        console.log(table);
+       }
+       if(x==fourteen){
+        table.push(14);
+        console.log(table);
+       }
+       if(x==fifteen){
+        table.push(15);
+        console.log(table);
+       }
+    }else{
+        if(x==one){
+        let index = table.indexOf(1);
+        table.splice(index,1);
+        console.log(table);
+        }
+        if(x==two){
+        let index = table.indexOf(2);
+        table.splice(index,1);
+        console.log(table);
+        }
+        if(x==three){
+            let index = table.indexOf(3);
+            table.splice(index,1);
+            console.log(table);
+            }
+            if(x==four){
+                let index = table.indexOf(4);
+                table.splice(index,1);
+                console.log(table);
+                }
+                if(x==five){
+                    let index = table.indexOf(5);
+                    table.splice(index,1);
+                    console.log(table);
+                    }
+                    if(x==six){
+                        let index = table.indexOf(6);
+                        table.splice(index,1);
+                        }
+                        if(x==seven){
+                            let index = table.indexOf(7);
+                            table.splice(index,1);
+                            }
+                            if(x==eight){
+                                let index = table.indexOf(8);
+                                table.splice(index,1);
+                                }
+                                if(x==nine){
+                                    let index = table.indexOf(9);
+                                    table.splice(index,1);
+                                    }
+                                    if(x==ten){
+                                        let index = table.indexOf(10);
+                                        table.splice(index,1);
+                                        }
+                                        if(x==eleven){
+                                            let index = table.indexOf(11);
+                                            table.splice(index,1);
+                                            }
+                                            if(x==twelve){
+                                                let index = table.indexOf(12);
+                                                table.splice(index,1);
+                                                }
+                                                if(x==thirteen){
+                                                    let index = table.indexOf(13);
+                                                    table.splice(index,1);
+                                                    }
+                                                    if(x==fourteen){
+                                                        let index = table.indexOf(14);
+                                                        table.splice(index,1);
+                                                        }
+                                                        if(x==fifteen){
+                                                            let index = table.indexOf(15);
+                                                            table.splice(index,1);
+                                                            }
 
+   }
+
+   }
+
+
+   console.log(table);
+   let upr_next=document.getElementById("upper-next");
+   upr_next.addEventListener('click',()=>{
+    for(let i=0;i<table.length;i++){
+        localStorage.setItem(i,table[i]);
+        console.log(localStorage.getItem(i));
+        }
+   })
+   window.onunload=function UncheckAll(){ 
+    var w = document.getElementsByTagName('input'); 
+    for(var i = 0; i < w.length; i++){ 
+      if(w[i].type=='checkbox'){ 
+        w[i].checked = false; 
+      }
+    }
+} 
+}
+
+
+//for (let i = 0; i < localStorage.length; i++) {
+  //  const key = localStorage.key(i);
+    //console.log(`${key}: ${localStorage.getItem(key)}`);
+//}

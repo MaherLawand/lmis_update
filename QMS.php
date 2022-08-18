@@ -12,7 +12,7 @@
     if (mysqli_num_rows($query) > 0) {
         $row = mysqli_fetch_assoc($query);
 
-        echo "<header> <h2> Welcome "  . $row['name'] . " </h2> <a href='logout.php'>Logout</a> </header>";
+        echo "<header> <h2> Welcome "  . $row['name'] . " </h2> <a id='logout' href='logout.php'>Logout</a> </header>";
     }
 ?>
 <!DOCTYPE html>
@@ -111,77 +111,77 @@
 <tr> <td> <P>1</P></td>
     <td> <p> Quality Policy </p></td>
     <td> <p> Vision, mission, values and commitment </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox" id="one" onclick=check(one); > </td>
 </tr>
 <tr> <td> <P>1</P></td>
     <td> <p> Quality Policy </p></td>
     <td> <p> Maintenance access and distribution </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox" id="two" onclick=check(two); > </td>
 </tr>
 <tr> <td> <P>1</P></td>
     <td> <p> Quality Policy </p></td>
     <td> <p> Role players in managing the QMS </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox" id="three" onclick=check(three); ;> </td>
 </tr>
 <tr> <td> <P>1</P></td>
     <td> <p> Quality Policy </p></td>
     <td> <p> Review Mechanisms </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox"id="four" onclick=check(four); > </td>
 </tr>
 <tr> <td> <P>2</P></td>
     <td> <p> Quality Policy </p></td>
     <td> <p> Facilatators/assessors/moderators-selection </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox" id="five" onclick=check(five); > </td>
 </tr>
 <tr> <td> <P>2</P></td>
     <td> <p> Quality Policy </p></td>
     <td> <p> Service level agreements/code of conduct </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox" id="six" onclick=check(six); > </td>
 </tr>
 <tr> <td> <P>2</P></td>
     <td> <p> Quality Policy </p></td>
     <td> <p> Staff development </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox" id="seven" onclick=check(seven); > </td>
 </tr>
 <tr> <td> <P>3</P></td>
     <td> <p> ETD Staff Management </p></td>
     <td> <p> Design, development of new learning programmes </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox" id="eight" onclick=check(eight); > </td>
 </tr>
 <tr> <td> <P>3</P></td>
     <td> <p> ETD Staff Management </p></td>
     <td> <p> Blueprints/curriculum principles </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox" id="nine" onclick=check(nine); > </td>
 </tr>
 <tr> <td> <P>3</P></td>
     <td> <p> ETD Staff Management </p></td>
     <td> <p> Corporate identity and branding </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox" id="ten" onclick=check(ten); > </td>
 </tr>
 <tr> <td> <P>3</P></td>
     <td> <p> ETD Staff Management </p></td>
     <td> <p> Focus and quality of provision </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox" id="eleven" onclick=check(eleven); > </td>
 </tr>
 <tr> <td> <P>3</P></td>
     <td> <p> ETD Staff Management </p></td>
     <td> <p> Offsite workplace management </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox" id="twelve" onclick=check(twelve); > </td>
 </tr>
 <tr> <td> <P>3</P></td>
     <td> <p> ETD Staff Management </p></td>
     <td> <p> Learner support </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox" id="thirteen" onclick=check(thirteen); > </td>
 </tr>
 <tr> <td> <P>3</P></td>
     <td> <p> ETD Staff Management </p></td>
     <td> <p> Appeals </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox" id="fourteen" onclick=check(fourteen); > </td>
 </tr>
 <tr> <td> <P>3</P></td>
     <td> <p> ETD Staff Management </p></td>
     <td> <p> Review/Evaluation </p></td>
-    <td> <input type="checkbox"> </td>
+    <td> <input type="checkbox" id="fifteen" onclick=check(fifteen);> </td>
 </tr>
 </table>
 
