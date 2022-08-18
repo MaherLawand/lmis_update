@@ -100,6 +100,7 @@ $contact_row = mysqli_fetch_assoc($selectcontact);
     <link rel="stylesheet" href="./css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <script type="text/javascript" src="./js/step1.js" defer></script>
+    <script type="text/javascript" src="./js/common.js" defer></script>
     <title>Document</title>
 </head>
 <body>
@@ -304,7 +305,7 @@ $contact_row = mysqli_fetch_assoc($selectcontact);
                 ?>
                 > No </option>
             </select></td>
-            <th>DHET Registration No:</th><td><input type="number" name="DHETnb" name="DHETnb" value="<?php 
+            <th>DHET Registration No:</th><td><input type="number" id="dhetnb" name="DHETnb" name="DHETnb" value="<?php 
             if(mysqli_num_rows($selectprovider)>0){
             if($provider_row['dhet_reg_num']!=""){
                 echo $provider_row['dhet_reg_num']; 
@@ -650,7 +651,7 @@ $contact_row = mysqli_fetch_assoc($selectcontact);
             }
                 ?>
                 ></td>
-            <th>Physical Address : </th> <td><input type="text" name="physicalAddress" value="<?php 
+            <th>Physical Address : </th> <td><input id="physicaladdress" type="text" name="physicalAddress" value="<?php 
              if(mysqli_num_rows($selectcontact)>0){
             if($contact_row['physical_address']!=""){
                 echo $contact_row['physical_address']; 
@@ -664,7 +665,7 @@ $contact_row = mysqli_fetch_assoc($selectcontact);
             }
                 ?>
                 ></td>
-            <th>Postal Address : </th> <td><input type="text" name="postalAddress" value="<?php 
+            <th>Postal Address : </th> <td><input id="postaladdress" type="text" name="postalAddress" value="<?php 
              if(mysqli_num_rows($selectcontact)>0){
             if($contact_row['postal_address']!=""){
                 echo $contact_row['postal_address']; 
@@ -862,9 +863,9 @@ $contact_row = mysqli_fetch_assoc($selectcontact);
                             
                         ?> 
            </select></td> 
-           <th>Province :</th><td><select name="ProvincePH" id="ProvincePH" class="count" onfocusout="checkempty('ProvincePH');" onkeyup="savebtn();"
+           <th>Province :</th><td><select name="ProvincePO" id="ProvincePO" class="count" onfocusout="checkempty('ProvincePO');" onkeyup="savebtn();"
             <?php if(mysqli_num_rows($selectcontact)>0){
-                if($contact_row['province_ph']!=""){
+                if($contact_row['province_po']!=""){
                     echo "disabled";
                 }
             }
@@ -879,7 +880,7 @@ $contact_row = mysqli_fetch_assoc($selectcontact);
                             while($rows = $result ->fetch_assoc())
                             {
                                 echo  "<option value = " .$rows['id']." " ?> <?php if(mysqli_num_rows($selectcontact)>0){
-                                    if($contact_row['province_ph']==$rows['id']){
+                                    if($contact_row['province_po']==$rows['id']){
                                         echo "selected";
                                     }
                                 } ?> <?php echo " >" . $rows['province'] . "</option>" ;

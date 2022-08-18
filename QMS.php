@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="./css/2.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <script type="text/javascript" src="./js/step2.js" defer></script>
+    <script type="text/javascript" src="./js/common.js" defer></script>
 </head>
 <input type="hidden" id="hidden" value="2">
 <div class="container">
