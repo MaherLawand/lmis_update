@@ -12,7 +12,7 @@
     if (mysqli_num_rows($query) > 0) {
         $row = mysqli_fetch_assoc($query);
 
-        echo "<header> <h2> Welcome "  . $row['name'] . " </h2> <a href='logout.php'>Logout</a> </header>";
+        echo "<header> <h2> Welcome "  . $row['name'] . " </h2> <a href='logout.php'>Logouts</a> </header>";
     }
     if(isset($_POST['submit'])){
     /*first database table*/
