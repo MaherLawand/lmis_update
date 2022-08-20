@@ -14,6 +14,10 @@
 
         echo "<header> <h2> Welcome "  . $row['name'] . " </h2> <a href='logout.php'>Logout</a> </header>";
     }
+    $selectlearning=mysqli_query($conn,"SELECT * FROM learningprogram");
+    if(mysqli_num_rows($selectlearning)>0){
+        $learning_row = mysqli_fetch_assoc($selectlearning);
+        }
 
 ?>
 
@@ -28,6 +32,7 @@
     <link rel="stylesheet" href="./css/programme.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css">
     <script type="text/javascript" src="./js/step2.js" defer></script>
+    <script type="text/javascript" src="./js/step3.js" defer></script>
     <title>Document</title>
 </head>
 <body>
@@ -93,6 +98,8 @@
 
 <div class="path2">
     <p >Enter the details of the training provider. Click on <strong>Save</strong> to save the changes that you have made. Click on <strong>Edit</strong> to edit an already existing record</p>
+    <form action="" method="POST">
+    
     <div class="flex-btns-2">
 
 <a id="edit" name="edit" onclick="savebtn();" class="btn">Edit</a>
@@ -138,8 +145,27 @@
     <tr>
         <td style="text-align:right;"> <label for="learning"> Learning Program: </label> </td>
         <td colspan="2">
-            <select style="width:100%;height:30px;" id="learning"> 
-                <option> </option>
+        
+            <select style="width:100%;height:30px;" id="learning" name="learning" onchange=change();> 
+            
+            <?php 
+                        include 'config.php';
+                        $sqllearning = "SELECT id ,title FROM learningprogram";
+                        $result = $conn -> query($sqllearning);
+                        // $rows = $result -> mysqli_fetch_assoc();
+                            //echo $conn;
+                            while($rows = $result ->fetch_assoc())
+                            {
+                                echo  "<option value = " .$rows['id']." " ?> <?php if(mysqli_num_rows($selectlearning)>0){
+                                    if($learning_row['title']==$rows['id']){
+                                        echo "selected";
+                                    }
+                                } ?> <?php echo " >" . $rows['title'] . "</option>" ;
+                            }
+                            
+                            
+                            
+                        ?> 
              </select>
              
         </td>
@@ -147,8 +173,26 @@
     <tr>
     <td style="text-align:right;"> <label for="Qualifiaction"> Qualification: </label> </td>
     <td colspan="2">
-            <select style="width:100%;height:30px;" id="Qualification"> 
-                <option> </option>
+            <select style="width:100%;height:30px;" id="Qualification" name="qualification"> 
+            <option> </option>
+            <?php 
+                        include 'config.php';
+                        $sqllearning = "SELECT id ,title FROM learningprogram";
+                        $result = $conn -> query($sqllearning);
+                        // $rows = $result -> mysqli_fetch_assoc();
+                            //echo $conn;
+                            while($rows = $result ->fetch_assoc())
+                            {
+                                echo  "<option hidden value = " .$rows['id']." " ?> <?php if(mysqli_num_rows($selectlearning)>0){
+                                    if($learning_row['title']==$rows['id']){
+                                        echo "selected";
+                                    }
+                                } ?> <?php echo " >" . $rows['title'] . "</option>" ;
+                            }
+                            
+                            
+                            
+                        ?> 
              </select>
              
     </td>
@@ -279,9 +323,10 @@
     </table>    
 
     </section>
+    
 </div>
 
-
+</form>
 <footer>
 
     <div id="footer">
