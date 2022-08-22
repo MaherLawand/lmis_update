@@ -147,7 +147,7 @@
         <td colspan="2">
         
             <select style="width:100%;height:30px;" id="learning" name="learning" onchange=change();> 
-            
+            <option> --Select </option>
             <?php 
                         include 'config.php';
                         $sqllearning = "SELECT id ,title FROM learningprogram";
@@ -178,10 +178,12 @@
             <?php 
                         include 'config.php';
                         $sqllearning = "SELECT id ,title FROM learningprogram";
+                        $sqlqual = "SELECT id ,title FROM qualifications";
                         $result = $conn -> query($sqllearning);
+                        $results = $conn -> query($sqlqual);
                         // $rows = $result -> mysqli_fetch_assoc();
                             //echo $conn;
-                            while($rows = $result ->fetch_assoc())
+                            while($rows = $results ->fetch_assoc())
                             {
                                 echo  "<option hidden value = " .$rows['id']." " ?> <?php if(mysqli_num_rows($selectlearning)>0){
                                     if($learning_row['title']==$rows['id']){
