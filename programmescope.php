@@ -18,7 +18,49 @@
     if(mysqli_num_rows($selectlearning)>0){
         $learning_row = mysqli_fetch_assoc($selectlearning);
         }
+        $selectunitstandard=mysqli_query($conn,"SELECT * FROM unitstandard");
+    if(mysqli_num_rows($selectunitstandard)>0){
+        $unitstandard_row = mysqli_fetch_assoc($selectunitstandard);
+        }
+        if(isset($_POST['add'])){
+            $learningprogram=mysqli_real_escape_string($conn, $_POST['learning']);
+            $qualification=mysqli_real_escape_string($conn, $_POST['qualification']);
+            $unitstandard=mysqli_real_escape_string($conn, $_POST['unit_standard']);
+            $us_qualification=mysqli_real_escape_string($conn, $_POST['qualification_standard']);
+           
+            //select learn
+            $selectlearn=mysqli_query($conn,"SELECT * FROM learningprogram WHERE id='{$learningprogram}'");
+            $learnrow=$selectlearn -> fetch_assoc();
+            
+            //select qual
+            $selectqual=mysqli_query($conn,"SELECT * FROM qualifications WHERE id='{$qualification}'");
+            $qualrow=$selectqual -> fetch_assoc();
 
+            //select elective
+
+            //select unit standard
+            $selectus=mysqli_query($conn,"SELECT * FROM unitstandard WHERE id='{$unitstandard}'");
+            $usrow=$selectus -> fetch_assoc();
+
+            //select uqual
+            $selectusqual=mysqli_query($conn,"SELECT * FROM qual_unitstandard WHERE unique_id='{$_POST['usqualhidden']}'");
+            $usqualrow=$selectusqual -> fetch_assoc();
+
+            if(mysqli_num_rows(mysqli_query($conn,"SELECT * FROM programmescope WHERE learningnumber='{$learningprogram}'"))==0 && $_POST['quals']==1){
+                $sqlinsertlearning = "INSERT INTO programmescope (id,learningtitle,learningid,qualificationtitle,qualificationid,learningstartdate,learningenddate,learningnumber) VALUES ('{$row['user_id']}','{$learnrow['title']}','{$learnrow['qualificationid']}', '{$qualrow['title']}','{$qualrow['learningprogramid']}','{$learnrow['startdate']}','{$learnrow['enddate']}','{$learningprogram}')";
+                $query_insert=mysqli_query($conn,$sqlinsertlearning);
+        }
+        if(mysqli_num_rows(mysqli_query($conn,"SELECT * FROM programmescopeus WHERE usnumber='{$_POST['usqualhidden']}'"))==0 && $_POST['quals']==2){
+            $sqlinsertus = "INSERT INTO programmescopeus (id,unitstandardtitle,unitstandardid,usqualtitle,usqualid,usstartdate,usenddate,usnumber) VALUES ('{$row['user_id']}','{$usrow['title']}','{$usrow['unitid']}', '{$usqualrow['title']}','{$usqualrow['qualid']}','{$usrow['start_date']}','{$usrow['end_date']}','{$_POST['usqualhidden']}')";
+            $query_insert=mysqli_query($conn,$sqlinsertus);
+    }
+    }
+    if(isset($_POST['del'])){
+        $delete=mysqli_query($conn,"DELETE FROM programmescope WHERE learningnumber='{$_POST['delete']}'");
+    }
+    if(isset($_POST['usdel'])){
+        $delete=mysqli_query($conn,"DELETE FROM programmescopeus WHERE usnumber='{$_POST['usdelete']}'");
+    }
 ?>
 
 
@@ -98,7 +140,8 @@
 
 <div class="path2">
     <p >Enter the details of the training provider. Click on <strong>Save</strong> to save the changes that you have made. Click on <strong>Edit</strong> to edit an already existing record</p>
-    <form action="" method="POST">
+    <form action=
+            "<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="POST">
     
     <div class="flex-btns-2">
 
@@ -110,17 +153,13 @@
     <table style="width:100%;border-collapse:collapse;">
     <tr>
         <td>
-            <input type="radio" id="qualification" name="quals" value="Qualifications">
+            <input type="radio" id="qualification-btn" name="quals" value="1" onchange=hide(); checked>
             <label for="qualification"> Qualifications </label> 
         </td>
         <td>
-            <input type="radio" id="unit" name="quals" value="Unit Standrads">
-            <label for="unit"> Unit Standrads </label>
+            <input type="radio" id="unit-btn" name="quals" value="2" onchange=hide();>
+            <label for="unit"> Unit Standards </label>
         </td>   
-        <td>
-            <input type="radio" id="skills" name="quals" value="Skills Programs">
-            <label for="skills"> Skills Programs </label>
-        </td>
         <td>
             <table style="border:1px solid #e2e2e2;width:100%;">
                 <tr>
@@ -142,12 +181,11 @@
     <tr>
     <td colspan="4"> <hr> </td>
     <tr>
-    <tr>
+    <tr id="learning-label">
         <td style="text-align:right;"> <label for="learning"> Learning Program: </label> </td>
         <td colspan="2">
         
             <select style="width:100%;height:30px;" id="learning" name="learning" onchange=change();> 
-            <option> --Select </option>
             <?php 
                         include 'config.php';
                         $sqllearning = "SELECT id ,title FROM learningprogram";
@@ -170,10 +208,10 @@
              
         </td>
     </tr>
-    <tr>
-    <td style="text-align:right;"> <label for="Qualifiaction"> Qualification: </label> </td>
+    <tr  id="qualification-label">
+    <td style="text-align:right;"> <label for="Qualification"> Qualification: </label> </td>
     <td colspan="2">
-            <select style="width:100%;height:30px;" id="Qualification" name="qualification"> 
+            <select style="width:100%;height:30px;" id="Qualification" name="qualification" onchange=electives();> 
             <option> </option>
             <?php 
                         include 'config.php';
@@ -199,8 +237,89 @@
              
     </td>
     <td style="text-align:right;">
-        <button type="button" value="Choose Electives" class="flex-btns"> Choose Electives </button>
+        <button type="button" value="Choose Electives" class="flex-btns" id="elective-btn" onclick=elective();> Choose Electives </button>
     </td>
+    </tr>
+    <tr id="elective-heading" hidden>
+    <td colspan="4" align=center style="background-color:#e2e2e2;border-radius:5px;">   <h2> Choose electives </h2> </td>
+    <tr id="elective-table" hidden>
+        <td colspan="4">
+        <table class="learning-units">
+            <tr>
+                <td> Select </td>
+                <td> Code </td>
+                <td> Title </td>
+                <td> Credits </td>
+            </tr>
+            <?php include 'config.php';
+                $sqlelectives="SELECT * FROM electives";
+                $result=$conn -> query($sqlelectives);
+                while($rows = $result ->fetch_assoc())
+                            {
+                                echo  "<tr class='elective_row' hidden>" ?><?php if($rows['title']!=" "){ echo 
+                                "<td> <input type='checkbox' class='elective' name='elective[]' value='";?><?php echo $rows['id']."'>";?> </td> <?php } ?>
+                                <?php echo "<td>" . $rows['code'] . "</td>" ;
+                                echo "<td>" . $rows['title'] . "</td>";
+                                echo "<td>" . $rows['credits'] . "</td>";
+                                echo "</tr>";
+                            }
+            ?>
+        </table>
+            
+    </tr>
+    <tr id="unit-label" hidden>
+    <td style="text-align:right;"> <label for="unit_standard"> Unit Standard: </label> </td>
+    <td colspan="2">
+            <select style="width:100%;height:30px;" id="unit_standard" name="unit_standard" onchange=changestandard();> 
+            <option> </option>
+            <?php 
+                        include 'config.php';
+                        $sqlunitstandard = "SELECT id ,title FROM unitstandard";
+                        $result = $conn -> query($sqlunitstandard);
+                        // $rows = $result -> mysqli_fetch_assoc();
+                            //echo $conn;
+                            while($rows = $result ->fetch_assoc())
+                            {
+                                echo  "<option value = " .$rows['id']." " ?> <?php if(mysqli_num_rows($selectunitstandard)>0){
+                                    if($unitstandard_row['title']==$rows['id']){
+                                        echo "selected";
+                                    }
+                                } ?> <?php echo " >" . $rows['title'] . "</option>" ;
+                            }
+                            
+                            
+                            
+                        ?> 
+             </select>
+             
+    </td>                
+    </tr>
+    <tr id="qual-label" hidden>
+    <td style="text-align:right;"> <label for="Qualifiaction_standard"> Qualification: </label> </td>
+    <td colspan="2">
+            <select style="width:100%;height:30px;" id="Qualification_standard" name="qualification_standard" onchange=getusqualid();> 
+            <option> </option>
+            <?php 
+                        include 'config.php';
+                        $sqlqual = "SELECT id ,title FROM qual_unitstandard";
+                        $results = $conn -> query($sqlqual);
+                        // $rows = $result -> mysqli_fetch_assoc();
+                            //echo $conn;
+                            while($rows = $results ->fetch_assoc())
+                            {
+                                echo  "<option hidden value = " .$rows['id']." " ?> <?php if(mysqli_num_rows($selectlearning)>0){
+                                    if($learning_row['title']==$rows['id']){
+                                        echo "selected";
+                                    }
+                                } ?> <?php echo " >" . $rows['title'] . "</option>" ;
+                            }
+                            
+                            
+                        ?> 
+                        <input type="radio" name="usqualhidden" id="usqualhidden" checked hidden>
+             </select>
+             
+    </td>              
     </tr>
     <tr>
         <td colspan="4"> <hr> </td>
@@ -219,7 +338,7 @@
     </tr>
     <tr>
         <td colspan="4" style="text-align:right;">
-            <button type="button" class="flex-btns" value="add learning unit"> Add Learning Unit </button>
+            <input type="submit" class="flex-btns" id="add" name="add" value="Add Learning Unit">
         </td>
     </tr>
     <tr>
@@ -239,21 +358,28 @@
                 <td> Start Date </td>
                 <td> End Date </td>
             </tr>
+          
             
 <tr>
     <td colspan="6" style="padding:0px;">
         <table class="learning-data" style="width:100%;height:300px;">
-            <tr>
-                <td> <button type="button" value="delete" class="btns"> DELETE </button>
-                     <button type="button" value="view" class="btns"> VIEW US </button> 
+        <?php $selectqualsperuser=mysqli_query($conn,"SELECT * FROM programmescope WHERE id='{$row['user_id']}'");
+       while($rows=$selectqualsperuser->fetch_assoc()){
+                echo "<tr> 
+                <td> <input type='submit' value='DELETE' name='del' id='del' class='btns'>
+                     <input type='text' value='".$rows['learningnumber']."' name='delete' id='delete' hidden>
+                     <button type='button' value='view' class='btns'> VIEW US </button>
                 </td>
-                <td> 50584 </td>
-                <td> General Education and Training Certificate: Clothing Manufacturing Processes	 </td>
-                <td>  </td>
-                <td> 2018-07-01 </td>
-                <td> 2023-07-01 </td>
-            </tr>
-            
+                <td>" . $rows['qualificationid'] . "</td>
+                <td>" . $rows['learningtitle'] . "</td>
+                <td>" . $rows['learningid'] . "</td>
+                <td>" . $rows['learningstartdate'] . "</td>
+                <td>" . $rows['learningenddate'] . "</td>
+                
+                </tr>";
+        }
+      
+            ?>         
         </table>
     </td>
 </tr>
@@ -269,7 +395,6 @@
             <tr>
                 <td> </td>
                 <td> Qualification ID </td>
-                <td> Learning Programme ID </td>
                 <td> Unit Standard ID </td>
                 <td> Title </td>
                 <td> Start Date </td>
@@ -277,12 +402,26 @@
                 <td> Learning Type </td>
             </tr>
             <tr>
-    <td colspan="8" style="padding:0px;">
+    <td colspan="7" style="padding:0px;">
         <table class="learning-data" style="width:100%;height:300px;">
-            <tr>
+        <?php $selectusperuser=mysqli_query($conn,"SELECT * FROM programmescopeus WHERE id='{$row['user_id']}'");
+        if(mysqli_num_rows($selectusperuser)>0){
+       while($row=$selectusperuser->fetch_assoc()){
+                echo "<tr> 
+                <td> <input type='submit' value='DELETE' name='usdel' id='usdel' class='btns'>
+                     <input type='text' value='".$row['usnumber']."' name='usdelete' id='usdelete' hidden>
+                </td>
+                <td>" . $row['usqualid'] . "</td>
+                <td>" . $row['unitstandardid'] . "</td>
+                <td>" . $row['unitstandardtitle'] . "</td>
+                <td>" . $row['usstartdate'] . "</td>
+                <td>" . $row['usenddate'] . "</td>
                 <td> </td>
-            </tr>
-            
+                </tr>";
+        }
+    }
+      
+            ?>    
         </table>
     </td>
 </tr>
@@ -290,32 +429,7 @@
         <td>
     </tr>
    
-    <tr>
-     <td colspan="4" align=center style="background-color:#e2e2e2;border-radius:5px;">   <h2> Skills Programs Learning Units </h2> </td>
-    </tr>
-    <tr>
-        <td colspan="4" style="border:0px;">
-        <table class="learning-units">
-            <tr>
-                <td> </td>
-                <td> Qualification ID </td>
-                <td> Unit Standard ID </td>
-                <td> Title </td>
-                <td> Start Date </td>
-                <td> End Date </td>
-                <td> Learning Type </td>
-                <td> SP Title </td>
-            </tr>
-<tr>
-    <td colspan="8" style="padding:0px;">
-        <table class="learning-data" style="width:100%;height:300px;">
-            <tr>
-                <td> </td>
-            </tr>
-            
-        </table>
-    </td>
-</tr>
+   
         </table>
 </td>
     </tr>
