@@ -37,7 +37,21 @@
             $qualrow=$selectqual -> fetch_assoc();
 
             //select elective
-
+            $selectedelectives=$_POST['electives'];
+            $electiveslength=count($selectedelectives);
+            $electivetitle=array();
+            $electivecode=array();
+            $electivecredits=array();
+            for($i=0;$i<$electiveslength;$i++){
+            $selectelective=mysqli_query($conn,"SELECT * FROM electives WHERE userid='{$selectedelectives[$i]}'");
+                $electiverow=$selectelective -> fetch_assoc();
+                array_push($electivetitle,$electiverow['title']);
+                array_push($electivecode,$electiverow['code']);
+                array_push($electivecredits,$electiverow['credits']);
+            }
+           $stringelectivetitle= implode(" , ",$electivetitle);
+           $stringelectivecode=implode(" , ",$electivecode);
+           $stringelectivecredits=implode(" , ",$electivecredits);
             //select unit standard
             $selectus=mysqli_query($conn,"SELECT * FROM unitstandard WHERE id='{$unitstandard}'");
             $usrow=$selectus -> fetch_assoc();
@@ -49,19 +63,26 @@
             if(mysqli_num_rows(mysqli_query($conn,"SELECT * FROM programmescope WHERE learningnumber='{$learningprogram}'"))==0 && $_POST['quals']==1){
                 $sqlinsertlearning = "INSERT INTO programmescope (id,learningtitle,learningid,qualificationtitle,qualificationid,learningstartdate,learningenddate,learningnumber) VALUES ('{$row['user_id']}','{$learnrow['title']}','{$learnrow['qualificationid']}', '{$qualrow['title']}','{$qualrow['learningprogramid']}','{$learnrow['startdate']}','{$learnrow['enddate']}','{$learningprogram}')";
                 $query_insert=mysqli_query($conn,$sqlinsertlearning);
+                //insert electives
+                $sqlinsertelectives="INSERT INTO programmescopeelectives (id,electivetitle,electivecode,electivecredits,qualificationid) VALUES ('{$row['user_id']}','{$stringelectivetitle}','{$stringelectivecode}','{ $stringelectivecredits}','{$_POST['qualification']}')";
+                $query_electives=mysqli_query($conn,$sqlinsertelectives);
+    }
         }
         if(mysqli_num_rows(mysqli_query($conn,"SELECT * FROM programmescopeus WHERE usnumber='{$_POST['usqualhidden']}'"))==0 && $_POST['quals']==2){
             $sqlinsertus = "INSERT INTO programmescopeus (id,unitstandardtitle,unitstandardid,usqualtitle,usqualid,usstartdate,usenddate,usnumber) VALUES ('{$row['user_id']}','{$usrow['title']}','{$usrow['unitid']}', '{$usqualrow['title']}','{$usqualrow['qualid']}','{$usrow['start_date']}','{$usrow['end_date']}','{$_POST['usqualhidden']}')";
             $query_insert=mysqli_query($conn,$sqlinsertus);
     }
-    }
+    
     if(isset($_POST['del'])){
         $delete=mysqli_query($conn,"DELETE FROM programmescope WHERE learningnumber='{$_POST['delete']}'");
+        $deleteelectives=mysqli_query($conn,"DELETE FROM programmescopeelectives WHERE qualificationid='{$_POST['deletebtn']}'");
+
     }
     if(isset($_POST['usdel'])){
         $delete=mysqli_query($conn,"DELETE FROM programmescopeus WHERE usnumber='{$_POST['usdelete']}'");
     }
 ?>
+
 
 
 
@@ -257,7 +278,8 @@
                 while($rows = $result ->fetch_assoc())
                             {
                                 echo  "<tr class='elective_row' hidden>" ?><?php if($rows['title']!=" "){ echo 
-                                "<td> <input type='checkbox' class='elective' name='elective[]' value='";?><?php echo $rows['id']."'>";?> </td> <?php } ?>
+                                "<td> <input type='checkbox' class='elective' name='elective[]' onchange=getelectiveid(); value='";?><?php echo $rows['id']."'>";?> 
+                                <?php echo " <input type='checkbox' class='electives' hidden name='electives[]' value='" . $rows['userid'] . "'</td>"; }?>
                                 <?php echo "<td>" . $rows['code'] . "</td>" ;
                                 echo "<td>" . $rows['title'] . "</td>";
                                 echo "<td>" . $rows['credits'] . "</td>";
@@ -368,6 +390,7 @@
                 echo "<tr> 
                 <td> <input type='submit' value='DELETE' name='del' id='del' class='btns'>
                      <input type='text' value='".$rows['learningnumber']."' name='delete' id='delete' hidden>
+                     <input type='text' value='".$rows['learningnumber']."' name='deletebtn' id='deletebtn' hidden>
                      <button type='button' value='view' class='btns'> VIEW US </button>
                 </td>
                 <td>" . $rows['qualificationid'] . "</td>

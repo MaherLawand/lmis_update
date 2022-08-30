@@ -60,6 +60,26 @@ function change(){
                                 }
                         }
                     }
+                    function deleteelective(){
+                        let deletebtn=document.getElementById('deletebtn');
+                        let qualification=document.getElementById('Qualification');
+                        for(let i=0;i<qualification.options.length;i++){
+                                if(qualification.options[i].selected){
+                                        deletebtn.value=i;
+                                }
+                        }
+                }
+                    function getelectiveid(){
+                        let elective=document.getElementsByClassName('elective');
+                        let electives=document.getElementsByClassName('electives');
+                        for(let i=0;i<elective.length;i++){
+                                if(elective[i].checked){
+                                        electives[i].setAttribute("checked","checked");
+                                }else{
+                                        electives[i].removeAttribute("checked");
+                                }
+                        }
+                    }
                     function hide(){
                         let qual_btn=document.getElementById('qualification-btn');
                         let unit_btn=document.getElementById('unit-btn');
